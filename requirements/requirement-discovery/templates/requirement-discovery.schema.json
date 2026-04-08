@@ -1,0 +1,129 @@
+{
+  "_comment": "Template/example for high-level discovery artifact JSON. Used by the requirement-discovery agent. Template path: requirements/requirement-discovery/templates/requirement-discovery.schema.json. Save to: requirements/discovery/YYYY-MM-DD-{slug}.discovery.json",
+  "artifact_type": "discovery",
+  "version": "2.0",
+  "title": "Lab Booking System",
+  "slug": "lab-booking-system",
+  "created_at": "YYYY-MM-DD",
+  "domain": "University Facilities Management",
+  "source_agent": "requirement-discovery",
+  "status": "Draft",
+  "readiness": {
+    "overall": "Partially Ready",
+    "dimensions": [
+      { "name": "Problem Statement", "confidence": "High", "notes": "Clearly confirmed by stakeholders." },
+      { "name": "Business Outcome", "confidence": "High", "notes": "Desired outcome is understood." },
+      { "name": "Stakeholders", "confidence": "Medium", "notes": "Some governance roles still need confirmation." },
+      { "name": "Scope", "confidence": "Medium", "notes": "Most boundaries agreed; one external integration is still unclear." },
+      { "name": "Current State", "confidence": "High", "notes": "Pain points and current process are well understood at a high level." },
+      { "name": "Future State Intent", "confidence": "Medium", "notes": "Core capabilities known, reporting expectations still broad." },
+      { "name": "Business Rules / Constraints", "confidence": "Medium", "notes": "Policy constraints confirmed; some timing rules are assumed." },
+      { "name": "Assumptions / Open Questions", "confidence": "Low", "notes": "Several questions remain before downstream decomposition." }
+    ]
+  },
+  "problem_statement": "Academic staff and students cannot easily discover which laboratory equipment is available or book it in advance, leading to scheduling conflicts and underutilisation of shared resources.",
+  "business_outcome": "Provide a business-friendly self-service booking capability that improves visibility of equipment availability, reduces scheduling conflicts, and supports better use of shared resources.",
+  "stakeholders": [
+    {
+      "id": "SH-001",
+      "name_or_role": "Student",
+      "type": "User",
+      "involvement": "Books equipment for coursework or research."
+    },
+    {
+      "id": "SH-002",
+      "name_or_role": "Academic Staff",
+      "type": "User",
+      "involvement": "Books equipment and may participate in approval decisions for restricted usage."
+    },
+    {
+      "id": "SH-003",
+      "name_or_role": "Lab Administrator",
+      "type": "Stakeholder",
+      "involvement": "Oversees equipment availability rules and operational readiness."
+    },
+    {
+      "id": "SH-004",
+      "name_or_role": "IT Services",
+      "type": "Stakeholder",
+      "involvement": "[Assumed] Supports enabling systems and institutional service dependencies."
+    }
+  ],
+  "scope": {
+    "in_scope": [
+      "Viewing equipment availability by date and time",
+      "Creating, modifying, and cancelling bookings",
+      "Supporting approval handling for restricted equipment",
+      "Providing notifications for important booking events"
+    ],
+    "out_of_scope": [
+      "Procurement or inventory management of equipment",
+      "Physical access control integration",
+      "Financial billing for equipment usage"
+    ]
+  },
+  "current_state_summary": [
+    "Equipment availability is not consistently visible to staff and students before they make a request.",
+    "Booking coordination relies on manual communication and local knowledge held by operational teams."
+  ],
+  "pain_points": [
+    "Users experience scheduling conflicts because availability is not transparent.",
+    "Operational staff spend time manually coordinating and resolving clashes.",
+    "Restricted equipment requests are not handled through a consistent business process."
+  ],
+  "future_state_intent": [
+    "Users should be able to view availability and submit booking requests through a clear self-service process.",
+    "Restricted equipment should follow a defined approval path with better visibility.",
+    "Stakeholders should receive clearer notifications and higher-level oversight of booking activity."
+  ],
+  "capability_themes": [
+    "Availability visibility",
+    "Booking request management",
+    "Approval handling",
+    "Notifications and oversight"
+  ],
+  "business_rules_constraints": [
+    {
+      "id": "BRC-001",
+      "statement": "A booking must not overlap with an existing confirmed booking for the same equipment.",
+      "type": "Business Rule",
+      "confidence": "High"
+    },
+    {
+      "id": "BRC-002",
+      "statement": "Restricted equipment requests must be reviewed before they are confirmed.",
+      "type": "Business Rule",
+      "confidence": "High"
+    },
+    {
+      "id": "BRC-003",
+      "statement": "[Assumed] Requests should normally be submitted at least 24 hours before the requested booking start time.",
+      "type": "Constraint",
+      "confidence": "[Assumed]"
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "DEP-001",
+      "description": "Operational rules and availability information must come from Lab Administration.",
+      "type": "Team"
+    },
+    {
+      "id": "DEP-002",
+      "description": "[Assumed] Institutional authentication and email services will be reused where possible.",
+      "type": "Existing Service"
+    }
+  ],
+  "assumptions": [
+    { "id": "AS-001", "statement": "IT Services will support the business capability using existing institutional services where feasible." },
+    { "id": "AS-002", "statement": "Single sign-on can be reused for the future process." },
+    { "id": "AS-003", "statement": "The institution's email service can support booking notifications." }
+  ],
+  "open_questions": [
+    { "id": "OQ-001", "question": "Should bookings be cancellable after the start time?", "priority": "High" },
+    { "id": "OQ-002", "question": "Is there a maximum booking duration per equipment type?", "priority": "Medium" },
+    { "id": "OQ-003", "question": "Who owns maintenance-related availability changes?", "priority": "Medium" },
+    { "id": "OQ-004", "question": "Should recurring bookings be part of the initial business scope?", "priority": "Low" }
+  ]
+}
+

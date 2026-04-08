@@ -1,0 +1,155 @@
+{
+  "_comment": "Template/example for architect draft requirement JSON. Used by the requirement-architect agent. Template path: requirements/requirement-architect/templates/requirement-architect-draft.schema.json. Save to: requirements/architect/YYYY-MM-DD-{slug}.requirements-draft.json",
+  "artifact_type": "requirements-draft",
+  "version": "2.0",
+  "title": "Lab Booking System",
+  "slug": "lab-booking-system",
+  "created_at": "YYYY-MM-DD",
+  "domain": "University Facilities Management",
+  "source_agent": "requirement-architect",
+  "source_discovery_artifact": "requirements/discovery/YYYY-MM-DD-lab-booking-system.discovery.json",
+  "status": "Draft",
+  "readiness": {
+    "overall": "Draftable with Gaps",
+    "notes": "Suitable for first-cut BA review, with several open questions remaining before detailed decomposition."
+  },
+  "executive_summary": "The institution needs a clearer, more consistent way for staff and students to discover equipment availability and request bookings, while giving operational stakeholders better oversight and approval handling for restricted equipment.",
+  "problem_statement": "Academic staff and students cannot easily discover which laboratory equipment is available or book it in advance, leading to scheduling conflicts and underutilisation of shared resources.",
+  "business_objectives": [
+    "Improve visibility of equipment availability before requests are made.",
+    "Reduce booking conflicts and manual coordination effort.",
+    "Introduce a clearer business process for restricted equipment approvals.",
+    "Provide more consistent notifications and oversight for stakeholders."
+  ],
+  "stakeholders": [
+    {
+      "id": "SH-001",
+      "role_or_group": "Student",
+      "type": "User",
+      "involvement": "Books equipment for coursework or research."
+    },
+    {
+      "id": "SH-002",
+      "role_or_group": "Academic Staff",
+      "type": "User",
+      "involvement": "Books equipment and may act in approval-related processes."
+    },
+    {
+      "id": "SH-003",
+      "role_or_group": "Lab Administrator",
+      "type": "Stakeholder",
+      "involvement": "Oversees business rules, availability, and operational readiness."
+    },
+    {
+      "id": "SH-004",
+      "role_or_group": "Head of Department",
+      "type": "Stakeholder",
+      "involvement": "Provides oversight and may review utilisation outcomes or policy impacts."
+    }
+  ],
+  "scope": {
+    "in_scope": [
+      "Viewing equipment availability by date and time",
+      "Creating, modifying, and cancelling bookings",
+      "Supporting approval handling for restricted equipment",
+      "Providing notifications for booking status changes"
+    ],
+    "out_of_scope": [
+      "Procurement or inventory management of equipment",
+      "Physical access control integration",
+      "Financial billing for equipment usage"
+    ]
+  },
+  "current_state_overview": [
+    "Availability information is not consistently visible before users make requests.",
+    "Coordination depends heavily on manual communication and operational knowledge."
+  ],
+  "pain_points": [
+    "Users encounter avoidable scheduling conflicts.",
+    "Operational teams spend time resolving clashes manually.",
+    "Restricted equipment requests are not handled through a consistent business process."
+  ],
+  "target_future_state": [
+    "Users can follow a clearer self-service process for availability checking and booking requests.",
+    "Restricted equipment requests follow a visible and consistent approval path.",
+    "Stakeholders receive better notifications and high-level oversight of booking activity."
+  ],
+  "capability_themes": [
+    {
+      "name": "Availability visibility",
+      "intent": "Allow users to understand what equipment is available before making a request.",
+      "why_it_matters": "Reduces uncertainty and avoids unnecessary conflicts.",
+      "included_in_theme": [
+        "Viewing availability by date and time",
+        "Seeing restrictions or availability conditions at a high level"
+      ],
+      "dependencies_touchpoints": [
+        "Lab Administration rules",
+        "Existing availability management practices"
+      ],
+      "open_points": [
+        "[Open] How should temporary maintenance-related unavailability be communicated to users?"
+      ]
+    },
+    {
+      "name": "Booking request management",
+      "intent": "Support a more consistent way for users to request, amend, and cancel bookings.",
+      "why_it_matters": "Improves user experience and reduces manual coordination effort.",
+      "included_in_theme": [
+        "Submitting booking requests",
+        "Changing or cancelling bookings"
+      ],
+      "dependencies_touchpoints": [
+        "Operational booking policies"
+      ],
+      "open_points": [
+        "[Open] Are there policy limits on amendment or cancellation timing?"
+      ]
+    },
+    {
+      "name": "Approval handling and oversight",
+      "intent": "Ensure restricted requests are reviewed consistently and stakeholders have appropriate visibility.",
+      "why_it_matters": "Supports governance, safety, and operational control.",
+      "included_in_theme": [
+        "Approval routing for restricted equipment",
+        "Notification of booking outcomes",
+        "High-level oversight and reporting needs"
+      ],
+      "dependencies_touchpoints": [
+        "Academic Staff approvers",
+        "Departmental governance"
+      ],
+      "open_points": [
+        "[Open] What level of reporting is needed in the initial release?"
+      ]
+    }
+  ],
+  "business_rules_constraints": [
+    "A booking must not overlap with an existing confirmed booking for the same equipment.",
+    "Restricted equipment requests must be reviewed before they are confirmed.",
+    "[Assumed] Requests should normally be submitted at least 24 hours before the requested booking start time."
+  ],
+  "dependencies_touchpoints": [
+    "Lab Administration for availability rules and operational ownership",
+    "Academic Staff or equivalent approvers for restricted requests",
+    "[Assumed] Existing institutional authentication and email services"
+  ],
+  "risks_considerations": [
+    "Policy details for cancellations and recurring bookings are not yet agreed.",
+    "Operational ownership for maintenance-related availability updates may need clarification.",
+    "Reporting expectations may expand unless scope is kept explicit in the draft review."
+  ],
+  "assumptions": [
+    { "id": "AS-001", "statement": "Existing institutional services can be reused where appropriate.", "traced_from": "discovery:AS-001" },
+    { "id": "AS-002", "statement": "Single sign-on can be reused for the future process.", "traced_from": "discovery:AS-002" },
+    { "id": "AS-003", "statement": "Institutional email services can support notifications.", "traced_from": "discovery:AS-003" }
+  ],
+  "open_questions": [
+    { "id": "OQ-001", "question": "Should bookings be cancellable after the start time?", "priority": "High", "area": "Booking request management", "traced_from": "discovery:OQ-001" },
+    { "id": "OQ-002", "question": "Is there a maximum booking duration per equipment type?", "priority": "Medium", "area": "Booking request management", "traced_from": "discovery:OQ-002" },
+    { "id": "OQ-003", "question": "Who owns maintenance-related availability changes?", "priority": "Medium", "area": "Availability visibility", "traced_from": "discovery:OQ-003" },
+    { "id": "OQ-004", "question": "What reporting scope is required in the first cut?", "priority": "Low", "area": "Approval handling and oversight", "traced_from": "discovery:OQ-004" }
+  ]
+}
+
+
