@@ -168,19 +168,15 @@ playwright-report/
 # ==============================================================================
 # PROJECT FOLDERS
 # ==============================================================================
-prototype/
 prototype1/
-docs/*
-!docs/adr/
-!docs/design/
-docs/design/*
-!docs/design/DESIGN_PRINCIPLES.md
-!docs/design/SPARKS_INSTRUCTION.md
+# Allow prototype spike source, exclude build artifacts
+prototype/**/node_modules/
+prototype/**/dist/
+prototype/**/*.tsbuildinfo
 .vite/
 
-# ==============================================================================
-# EVALUATION OUTPUTS
-# ==============================================================================
+# Allow docs — exclude only evaluation outputs and generated artifacts
+!docs/
 docs/evaluation/
 
 # ==============================================================================
@@ -194,3 +190,5 @@ docs/evaluation/
 
 # Build artifacts
 *.zip
+**/dist/
+tsconfig.tsbuildinfo

@@ -1,0 +1,48 @@
+# Project Asset Locations
+
+**Last Updated:** 2026-04-21
+**Project Scope:** ORMC AI Document Audit
+
+## Configured Integrations
+
+### GitHub Repository
+- **Owner:** bennyfoo-nusit
+- **Repo:** ormc-audit-ai
+- **Full URL:** https://github.com/bennyfoo-nusit/ormc-audit-ai
+- **Default Branch:** main
+- **Status:** ✅ Configured
+
+### Azure DevOps Project
+- **Project Name:** ORMC Document Audit
+- **Project ID:** 9dd9f357-9128-4ab4-96c5-2a14f89166dd
+- **Organization:** nusit-aat-ad
+- **Full URL:** https://dev.azure.com/nusit-aat-ad/ORMC%20Document%20Audit
+- **Status:** ✅ Configured
+
+### Confluence Documentation
+- **Space Key:** nusit
+- **Space Name:** NUS Information Technology
+- **Space ID:** 26869764
+- **Cloud ID:** 3f00961b-f7c7-47a1-ba99-d5536a812cc6
+- **Space URL:** https://nusinfoplace.atlassian.net/wiki/spaces/nusit
+- **Discovery Page ID:** 1578860576
+- **Discovery Page Title:** Discovery: AI Document Audit
+- **Discovery Page URL:** https://nusinfoplace.atlassian.net/wiki/spaces/nusit/pages/1578860576/Discovery+AI+Document+Audit
+- **TDS Page ID:** 1644593229
+- **TDS Page Title:** TDS: AI Document Audit — Technical Design Specification
+- **TDS Page URL:** https://nusinfoplace.atlassian.net/wiki/spaces/nusit/pages/1644593229/TDS+AI+Document+Audit+Technical+Design+Specification
+- **Status:** ✅ Configured
+
+---
+
+## Validation Status
+Last validated: 2026-04-21
+
+- GitHub: ⚠️ Not configured
+- Azure DevOps: ✅ Accessible (project: ORMC Document Audit)
+- Confluence: ✅ Accessible (space: nusit, page 1578860576 readable)
+
+## Notes
+- MCP connection is configured in VS Code
+- GitHub is not configured for this project
+- Run `@connectivity-agent validate` to retest connections
