@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { useKV } from '@github/spark/hooks'
+import { useKV } from '@/hooks/use-kv'
 import { Highlighter, ChatCircle, FolderOpen, Funnel, X, MagnifyingGlass } from '@phosphor-icons/react'
 import { DocumentTree, TreeNode } from '@/components/DocumentTree'
 import { PDFViewer, Shape } from '@/components/PDFViewer'

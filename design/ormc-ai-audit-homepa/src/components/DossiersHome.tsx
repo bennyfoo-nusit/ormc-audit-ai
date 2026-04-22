@@ -1,10 +1,18 @@
-import { useKV } from '@github/spark/hooks'
-import { Plus, Folder, FolderOpen, ShareNetwork, User } from '@phosphor-icons/react'
+import { useKV } from '@/hooks/use-kv'
+import { Plus, Folder, FolderOpen, ShareNetwork, User, MagnifyingGlass, SquaresFour, List } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import {
   Dialog,
   DialogContent,
@@ -46,7 +54,9 @@ export function DossiersHome({ onProjectClick, onDocumentManagementClick }: Doss
   const [newProjectTitle, setNewProjectTitle] = useState('')
   const [newProjectDescription, setNewProjectDescription] = useState('')
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+  const [currentUserId, setCurrentUserId] = useState<string | null>('180628674')
+  const [viewMode, setViewMode] = useState<'card' | 'list'>('card')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     const initializeData = async () => {
@@ -218,11 +228,89 @@ export function DossiersHome({ onProjectClick, onDocumentManagementClick }: Doss
     )
   }
 
-  const myProjects = (projects || []).filter(p => p.ownerId === currentUserId)
-  const sharedProjects = (projects || []).filter(p => {
+  const filterBySearch = (list: Project[]) => {
+    if (!searchQuery.trim()) return list
+    const q = searchQuery.toLowerCase()
+    return list.filter(p =>
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q)
+    )
+  }
+
+  const myProjects = filterBySearch((projects || []).filter(p => p.ownerId === currentUserId))
+  const sharedProjects = filterBySearch((projects || []).filter(p => {
     if (p.ownerId === currentUserId) return false
     return p.shares?.some(share => share.userId === currentUserId)
-  })
+  }))
+
+  const renderProjectListRow = (project: Project, isShared: boolean = false) => (
+    <TableRow
+      key={project.id}
+      className="cursor-pointer hover:bg-accent/5 transition-colors"
+      onClick={() => onProjectClick(project)}
+    >
+      <TableCell>
+        <div className="flex items-center gap-3">
+          <Folder size={20} weight="fill" className="text-primary flex-shrink-0" />
+          <span className="font-semibold">{project.title}</span>
+        </div>
+      </TableCell>
+      <TableCell className="text-muted-foreground text-sm max-w-[300px] truncate">
+        {project.description || '—'}
+      </TableCell>
+      <TableCell className="text-muted-foreground text-sm">
+        {new Date(project.createdAt).toLocaleDateString()}
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          {isShared && (
+            <Badge variant="outline" className="text-xs gap-1">
+              <User size={12} weight="fill" />
+              Shared
+            </Badge>
+          )}
+          {!isShared && project.shares && project.shares.length > 0 && (
+            <Badge variant="outline" className="text-xs gap-1">
+              <ShareNetwork size={12} weight="fill" />
+              {project.shares.length}
+            </Badge>
+          )}
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center justify-end gap-1">
+          {!isShared && (
+            <ShareProjectDialog
+              project={project}
+              onUpdateProject={handleUpdateProject}
+              trigger={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ShareNetwork size={16} weight="bold" className="text-accent" />
+                </Button>
+              }
+            />
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={(e) => {
+              e.stopPropagation()
+              onDocumentManagementClick(project)
+            }}
+            title="Manage Documents"
+          >
+            <FolderOpen size={16} weight="bold" className="text-muted-foreground" />
+          </Button>
+        </div>
+      </TableCell>
+    </TableRow>
+  )
 
   const renderProjectCard = (project: Project, isShared: boolean = false) => (
     <Card
@@ -372,6 +460,41 @@ export function DossiersHome({ onProjectClick, onDocumentManagementClick }: Doss
           </p>
         </div>
 
+        {/* Search & View Toggle */}
+        {projects && projects.length > 0 && (
+          <div className="flex items-center gap-3 mb-6">
+            <div className="relative flex-1 max-w-sm">
+              <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search projects..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <div className="flex items-center border rounded-lg overflow-hidden">
+              <Button
+                variant={viewMode === 'card' ? 'default' : 'ghost'}
+                size="sm"
+                className="rounded-none h-9 px-3"
+                onClick={() => setViewMode('card')}
+                title="Card view"
+              >
+                <SquaresFour size={18} weight={viewMode === 'card' ? 'fill' : 'regular'} />
+              </Button>
+              <Button
+                variant={viewMode === 'list' ? 'default' : 'ghost'}
+                size="sm"
+                className="rounded-none h-9 px-3"
+                onClick={() => setViewMode('list')}
+                title="List view"
+              >
+                <List size={18} weight={viewMode === 'list' ? 'fill' : 'regular'} />
+              </Button>
+            </div>
+          </div>
+        )}
+
         {(!projects || projects.length === 0) ? (
           <div className="flex flex-col items-center justify-center py-16 px-4">
             <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-6">
@@ -388,15 +511,44 @@ export function DossiersHome({ onProjectClick, onDocumentManagementClick }: Doss
           </div>
         ) : (
           <div className="space-y-10">
+            {myProjects.length === 0 && sharedProjects.length === 0 && searchQuery.trim() && (
+              <div className="flex flex-col items-center justify-center py-12 px-4">
+                <MagnifyingGlass size={48} className="text-muted-foreground mb-4" />
+                <h3 className="text-lg font-semibold mb-1">No results found</h3>
+                <p className="text-muted-foreground text-sm">No projects match "{searchQuery}"</p>
+              </div>
+            )}
+
             {myProjects.length > 0 && (
               <div>
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <Folder size={24} weight="fill" className="text-primary" />
                   My Projects
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {myProjects.map((project) => renderProjectCard(project, false))}
-                </div>
+                {viewMode === 'card' ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {myProjects.map((project) => renderProjectCard(project, false))}
+                  </div>
+                ) : (
+                  <Card>
+                    <CardContent className="p-0">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-muted/50">
+                            <TableHead className="min-w-[200px]">Project</TableHead>
+                            <TableHead className="min-w-[200px]">Description</TableHead>
+                            <TableHead className="w-[120px]">Created</TableHead>
+                            <TableHead className="w-[100px]">Status</TableHead>
+                            <TableHead className="w-[100px] text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {myProjects.map((project) => renderProjectListRow(project, false))}
+                        </TableBody>
+                      </Table>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             )}
 
@@ -406,9 +558,30 @@ export function DossiersHome({ onProjectClick, onDocumentManagementClick }: Doss
                   <ShareNetwork size={24} weight="fill" className="text-accent" />
                   Shared with Me
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {sharedProjects.map((project) => renderProjectCard(project, true))}
-                </div>
+                {viewMode === 'card' ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {sharedProjects.map((project) => renderProjectCard(project, true))}
+                  </div>
+                ) : (
+                  <Card>
+                    <CardContent className="p-0">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-muted/50">
+                            <TableHead className="min-w-[200px]">Project</TableHead>
+                            <TableHead className="min-w-[200px]">Description</TableHead>
+                            <TableHead className="w-[120px]">Created</TableHead>
+                            <TableHead className="w-[100px]">Status</TableHead>
+                            <TableHead className="w-[100px] text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {sharedProjects.map((project) => renderProjectListRow(project, true))}
+                        </TableBody>
+                      </Table>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             )}
           </div>

@@ -188,3 +188,9 @@ docs/evaluation/
 # ==============================================================================
 .history/
 *.sublime-workspace
+
+# Playwright MCP
+.playwright-mcp/
+
+# Build artifacts
+*.zip
